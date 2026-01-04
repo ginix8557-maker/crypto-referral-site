@@ -373,6 +373,54 @@ img, video, canvas{ max-width: 100%; height: auto; }
   font-size: 12px;
 }
 
+/* ===== Support (Telegram) card ===== */
+.card-support{
+  padding: 18px;
+}
+
+.support-head{
+  display: flex;
+  align-items: center;
+  gap: 14px;
+}
+
+.support-logo{
+  width: 44px;
+  height: 44px;
+  border-radius: 12px;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  border: 1px solid var(--border);
+  background: rgba(246, 248, 251, 0.9);
+  flex: 0 0 44px;
+}
+
+/* 텔레그램 로고 크게 */
+.support-logo .ex-logo-svg{
+  width: 26px;
+  height: 26px;
+}
+
+/* 타이포 */
+.support-title{
+  margin: 0;
+  font-size: 15px;
+  font-weight: 800;
+  letter-spacing: -0.01em;
+}
+
+.support-desc{
+  margin: 6px 0 0;
+  color: var(--muted);
+  font-size: 13px;
+  line-height: 1.45;
+}
+
+.support-actions{
+  margin-top: 14px;
+}
+
 /* Mobile touch improvements */
 @media (max-width: 480px){
   .btn{ height: 44px; padding: 0 14px; }

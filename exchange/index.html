@@ -108,6 +108,28 @@
       const desc = '공식 가입 페이지로 이동';
       const subline = item.subline || item.feeLine || '';
       const logoSvg = pickLogoSvg(item);
+      // ===== Telegram support card (special layout) =====
+      if (id === 'support-telegram') {
+        const tgTitle = '가입 방법 · 기타 거래소 문의';
+        const tgDesc = '가입 절차 안내 및 미등록 거래소 관련 문의를 받습니다.';
+        const tgLink = externalLink || 'https://t.me/kkyh1122';
+
+        return `
+          <article class="card card-support">
+            <div class="support-head">
+              <div class="support-logo" aria-hidden="true">${LOGO_SVGS.telegram}</div>
+              <div class="support-text">
+                <h2 class="support-title">${escapeHtml(tgTitle)}</h2>
+                <p class="support-desc">${escapeHtml(tgDesc)}</p>
+              </div>
+            </div>
+
+            <div class="actions support-actions">
+              <a class="btn btn-primary" href="${escapeHtml(tgLink)}" target="_blank" rel="noopener noreferrer">텔레그램 문의하기</a>
+            </div>
+          </article>
+        `;
+      }
 
       const detailUrl = `./detail.html?id=${encodeURIComponent(id)}`;
       const externalLink = item.link || item.url || item.referralUrl || '';
