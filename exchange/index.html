@@ -2,104 +2,143 @@
 <html lang="ko">
 <head>
   <meta charset="utf-8" />
-  <title>코인 레퍼럴 모음</title>
   <meta name="viewport" content="width=device-width, initial-scale=1" />
-  <link rel="stylesheet" href="/assets/styles.css" />
+  <title>코인 레퍼럴 모음</title>
+  <meta name="description" content="거래소 레퍼럴 정보를 깔끔하게 모아둔 페이지입니다. 검색으로 빠르게 찾고, 상세 페이지에서 링크를 확인하세요." />
+
+  <!-- 공통 CSS -->
+  <link rel="stylesheet" href="../assets/styles.css" />
 </head>
 <body>
-  <div class="container">
-    <div class="header">
-      <div class="hgroup">
-        <h1>코인 레퍼럴 모음</h1>
-        <p>레퍼럴 정보/링크를 깔끔하게 정리한 페이지</p>
+  <main class="container">
+    <div class="topbar">
+      <div>
+        <h1 class="page-title">코인 레퍼럴 모음</h1>
+        <p class="page-subtitle">레퍼럴 정보/링크를 깔끔하게 정리한 페이지</p>
+        <span class="badge">Theme A · BG #F6F8FB · Primary #2B6CB0</span>
       </div>
 
-      <div class="search">
-        <input id="q" class="input" placeholder="검색 (예: 바이낸스)" />
+      <div class="search" role="search" aria-label="검색">
+        <span aria-hidden="true">🔎</span>
+        <input id="q" type="search" placeholder="거래소 이름/키워드 검색 (예: 업비트, 빗썸, 바이낸스)" />
       </div>
     </div>
 
-    <div id="grid" class="grid" aria-live="polite"></div>
+    <!-- 카드 목록이 들어갈 영역: card-grid -->
+    <section id="cards" class="card-grid" aria-label="레퍼럴 목록"></section>
 
     <div class="footer">
-      <span id="count"></span>
+      © <span id="y"></span> Coin Referral. Built with HTML/CSS/JS (no build tools).
     </div>
-  </div>
+  </main>
 
-<script>
-async function loadData(){
-  const res = await fetch('/data/referrals.json', { cache: 'no-store' });
-  if(!res.ok) throw new Error('데이터를 불러오지 못했어요');
-  return res.json();
-}
+  <script>
+    // footer year
+    document.getElementById('y').textContent = new Date().getFullYear();
 
-function escapeHtml(s){
-  return String(s ?? '').replace(/[&<>"']/g, (m)=>({
-    '&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'
-  }[m]));
-}
+    const $cards = document.getElementById('cards');
+    const $q = document.getElementById('q');
 
-function render(items){
-  const grid = document.getElementById('grid');
-  const count = document.getElementById('count');
+    let all = [];
 
-  if(!items.length){
-    grid.innerHTML = '<div class="smallLink">검색 결과가 없어요.</div>';
-    count.textContent = '';
-    return;
-  }
+    function escapeHtml(s) {
+      return String(s ?? '')
+        .replaceAll('&', '&amp;')
+        .replaceAll('<', '&lt;')
+        .replaceAll('>', '&gt;')
+        .replaceAll('"', '&quot;')
+        .replaceAll("'", '&#39;');
+    }
 
-  grid.innerHTML = items.map(it=>{
-    const title = escapeHtml(it.title);
-    const summary = escapeHtml(it.summary);
-    const updated = escapeHtml(it.updatedAt || '');
-    const id = encodeURIComponent(it.id);
+    function makeCard(item) {
+      // item 필드는 referrals.json 구조에 맞춰 사용:
+      // id, name/title, description, tags(optional), link(optional)
+      const id = item.id;
+      const title = item.title || item.name || id;
+      const desc = item.description || item.desc || '';
 
-    return `
-      <article class="card">
-        <div class="cardInner">
-          <h2 class="cardTitle">${title}</h2>
-          <p class="cardSummary">${summary}</p>
-          <div class="cardMeta">
-            <span>업데이트</span>
-            <span>${updated}</span>
+      const tags = Array.isArray(item.tags) ? item.tags : [];
+      const tagsHtml = tags.slice(0, 6).map(t => `<span class="pill">${escapeHtml(t)}</span>`).join('');
+
+      const detailUrl = `./detail.html?id=${encodeURIComponent(id)}`;
+      const externalLink = item.link || item.url || item.referralUrl || '';
+
+      const externalBtn = externalLink
+        ? `<a class="btn btn-primary" href="${escapeHtml(externalLink)}" target="_blank" rel="noopener noreferrer">레퍼럴 링크 열기</a>`
+        : `<a class="btn btn-primary" href="${detailUrl}">상세에서 확인</a>`;
+
+      return `
+        <article class="card">
+          <h2 class="card-title">${escapeHtml(title)}</h2>
+          <p class="card-desc">${escapeHtml(desc)}</p>
+          ${tagsHtml ? `<div class="card-meta">${tagsHtml}</div>` : ``}
+          <div class="actions">
+            ${externalBtn}
+            <a class="btn btn-outline" href="${detailUrl}">상세 보기</a>
           </div>
-          <div class="btnRow">
-            <a class="btn btnPrimary" href="/exchange/detail.html?id=${id}">자세히 보기</a>
+        </article>
+      `;
+    }
+
+    function render(list) {
+      if (!list.length) {
+        $cards.innerHTML = `
+          <div class="detail">
+            <h1>검색 결과가 없어요</h1>
+            <p>다른 키워드로 검색해보세요.</p>
           </div>
-        </div>
-      </article>
-    `;
-  }).join('');
+        `;
+        return;
+      }
+      $cards.innerHTML = list.map(makeCard).join('');
+    }
 
-  count.textContent = `총 ${items.length}개`;
-}
+    function applySearch() {
+      const q = ($q.value || '').trim().toLowerCase();
+      if (!q) return render(all);
 
-function setupSearch(all){
-  const input = document.getElementById('q');
-  function apply(){
-    const q = (input.value || '').trim().toLowerCase();
-    if(!q){ render(all); return; }
-    const filtered = all.filter(it => {
-      const hay = `${it.title||''} ${it.summary||''}`.toLowerCase();
-      return hay.includes(q);
-    });
-    render(filtered);
-  }
-  input.addEventListener('input', apply);
-  apply();
-}
+      const filtered = all.filter(it => {
+        const blob = [
+          it.id,
+          it.title, it.name,
+          it.description, it.desc,
+          Array.isArray(it.tags) ? it.tags.join(' ') : ''
+        ].join(' ').toLowerCase();
 
-(async ()=>{
-  try{
-    const all = await loadData();
-    // category가 exchange인 것만
-    const items = all.filter(x => (x.category || 'exchange') === 'exchange');
-    setupSearch(items);
-  }catch(e){
-    document.getElementById('grid').innerHTML = `<div class="smallLink">${escapeHtml(e.message)}</div>`;
-  }
-})();
-</script>
+        return blob.includes(q);
+      });
+
+      render(filtered);
+    }
+
+    async function load() {
+      try {
+        const res = await fetch('../data/referrals.json', { cache: 'no-store' });
+        if (!res.ok) throw new Error('referrals.json 로드 실패: ' + res.status);
+
+        const data = await res.json();
+
+        // data가 배열이거나 {items:[...]} 형태일 수 있어서 둘 다 지원
+        all = Array.isArray(data) ? data : (Array.isArray(data.items) ? data.items : []);
+
+        // id 없는 데이터는 제외
+        all = all.filter(x => x && x.id);
+
+        render(all);
+      } catch (err) {
+        console.error(err);
+        $cards.innerHTML = `
+          <div class="detail">
+            <h1>데이터를 불러오지 못했어요</h1>
+            <p>../data/referrals.json 파일 경로 또는 JSON 문법(쉼표/따옴표)을 확인해주세요.</p>
+          </div>
+        `;
+      }
+    }
+
+    $q.addEventListener('input', applySearch);
+
+    load();
+  </script>
 </body>
 </html>
