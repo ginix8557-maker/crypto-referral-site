@@ -1,0 +1,105 @@
+<!doctype html>
+<html lang="ko">
+<head>
+  <meta charset="utf-8" />
+  <title>코인 레퍼럴 모음</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <link rel="stylesheet" href="/assets/styles.css" />
+</head>
+<body>
+  <div class="container">
+    <div class="header">
+      <div class="hgroup">
+        <h1>코인 레퍼럴 모음</h1>
+        <p>레퍼럴 정보/링크를 깔끔하게 정리한 페이지</p>
+      </div>
+
+      <div class="search">
+        <input id="q" class="input" placeholder="검색 (예: 바이낸스)" />
+      </div>
+    </div>
+
+    <div id="grid" class="grid" aria-live="polite"></div>
+
+    <div class="footer">
+      <span id="count"></span>
+    </div>
+  </div>
+
+<script>
+async function loadData(){
+  const res = await fetch('/data/referrals.json', { cache: 'no-store' });
+  if(!res.ok) throw new Error('데이터를 불러오지 못했어요');
+  return res.json();
+}
+
+function escapeHtml(s){
+  return String(s ?? '').replace(/[&<>"']/g, (m)=>({
+    '&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'
+  }[m]));
+}
+
+function render(items){
+  const grid = document.getElementById('grid');
+  const count = document.getElementById('count');
+
+  if(!items.length){
+    grid.innerHTML = '<div class="smallLink">검색 결과가 없어요.</div>';
+    count.textContent = '';
+    return;
+  }
+
+  grid.innerHTML = items.map(it=>{
+    const title = escapeHtml(it.title);
+    const summary = escapeHtml(it.summary);
+    const updated = escapeHtml(it.updatedAt || '');
+    const id = encodeURIComponent(it.id);
+
+    return `
+      <article class="card">
+        <div class="cardInner">
+          <h2 class="cardTitle">${title}</h2>
+          <p class="cardSummary">${summary}</p>
+          <div class="cardMeta">
+            <span>업데이트</span>
+            <span>${updated}</span>
+          </div>
+          <div class="btnRow">
+            <a class="btn btnPrimary" href="/exchange/detail.html?id=${id}">자세히 보기</a>
+          </div>
+        </div>
+      </article>
+    `;
+  }).join('');
+
+  count.textContent = `총 ${items.length}개`;
+}
+
+function setupSearch(all){
+  const input = document.getElementById('q');
+  function apply(){
+    const q = (input.value || '').trim().toLowerCase();
+    if(!q){ render(all); return; }
+    const filtered = all.filter(it => {
+      const hay = `${it.title||''} ${it.summary||''}`.toLowerCase();
+      return hay.includes(q);
+    });
+    render(filtered);
+  }
+  input.addEventListener('input', apply);
+  apply();
+}
+
+(async ()=>{
+  try{
+    const all = await loadData();
+    // category가 exchange인 것만
+    const items = all.filter(x => (x.category || 'exchange') === 'exchange');
+    setupSearch(items);
+  }catch(e){
+    document.getElementById('grid').innerHTML = `<div class="smallLink">${escapeHtml(e.message)}</div>`;
+  }
+})();
+</script>
+</body>
+</html>

@@ -1,0 +1,14 @@
+[
+  {
+    "id": "referral",
+    "title": "레퍼럴 예시",
+    "summary": "레퍼럴 정보를 정리하는 페이지(테스트)",
+    "link": "https://example.com",
+    "category": "exchange",
+    "updatedAt": "2026-01-04",
+    "notes": [
+      "링크를 통해 가입해야 혜택이 적용될 수 있어요.",
+      "혜택 조건은 수시로 바뀔 수 있어요."
+    ]
+  }
+]
