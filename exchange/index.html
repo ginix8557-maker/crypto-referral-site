@@ -88,125 +88,140 @@
 
 
     function makeCard(item) {
-        const id = item.id;
-        const rawTitle = item.title || item.name || id;
+      const id = item.id;
+      const rawTitle = item.title || item.name || id;
 
-        // 모든 카드 공통 링크
-        const externalLink = item.link || item.url || item.referralUrl || '';
+      // 공통 링크 (⚠️ 반드시 위에서 선언)
+      const externalLink = item.link || item.url || item.referralUrl || '';
 
-        /* =========================
-           Telegram support card
-           ========================= */
-        if (id === 'support-telegram') {
-            const tgTitle = item.summary || '가입 방법 · 기타 거래소 문의';
-            const tgDesc = '가입 절차 안내 및 미등록 거래소 관련 문의';
-            const tgLink = externalLink || 'https://t.me/kkyh1122';
-
-            return `
-                <article class="card card-support">
-                    <div class="support-head">
-                        <div class="support-logo" aria-hidden="true">
-                            ${LOGO_SVGS.telegram}
-                        </div>
-
-                        <div class="support-text">
-                            <h2 class="support-title">${escapeHtml(tgTitle)}</h2>
-                            <p class="support-desc">${escapeHtml(tgDesc)}</p>
-                        </div>
-                    </div>
-
-                    <div class="actions support-actions">
-                        <a
-                            class="btn btn-primary"
-                            href="${escapeHtml(tgLink)}"
-                            target="_blank"
-                            rel="noopener noreferrer"
-                        >
-                            텔레그램 문의하기
-                        </a>
-                    </div>
-                </article>
-            `;
-        }
-
-        /* =========================
-           Exchange cards (default)
-           ========================= */
-
-        // 제목에서 "(binance)" 같은 영문 분리
-        let titleMain = rawTitle;
-        let titleEn = '';
-        const m = String(rawTitle).match(/^(.*)\(([^)]+)\)\s*$/);
-        if (m) {
-            titleMain = m[1].trim();
-            titleEn = m[2].trim();
-        }
-
-        const desc = '공식 가입 페이지로 이동';
-        const subline = item.subline || item.feeLine || '';
-        const logoSvg = pickLogoSvg(item);
-
-        const detailUrl = `./detail.html?id=${encodeURIComponent(id)}`;
-
-        const externalBtn = externalLink
-            ? `<a
-                    class="btn btn-primary"
-                    href="${escapeHtml(externalLink)}"
-                    target="_blank"
-                    rel="noopener noreferrer"
-               >가입하기</a>`
-            : `<a class="btn btn-primary" href="${detailUrl}">상세에서 확인</a>`;
-
-        // 할인 배지
-        const tags = Array.isArray(item.tags) ? item.tags : [];
-        const hero = tags.find(t => /%/.test(String(t))) || '';
-
-        // 기준 라벨
-        const basis = tags.find(t => String(t).includes('시장가')) || '시장가 기준';
-
-        // 수수료 숫자 가공
-        const feeNumbersRaw = String(subline || '')
-            .replace(/^시장가\s*수수료\s*/g, '')
-            .replace(/^시장가\s*/g, '')
-            .trim();
-
-        let feeNumbers = feeNumbersRaw;
-        if (feeNumbersRaw.includes('→')) {
-            const [before, after] = feeNumbersRaw.split('→').map(s => s.trim());
-            feeNumbers = `${before} → <span class="after">${after}</span>`;
-        }
+      // ============================
+      // Telegram Support Card (전용)
+      // ============================
+      if (id === 'support-telegram') {
+        const tgTitle = item.summary || '가입 방법 및 기타 거래소 문의';
+        const tgLink = externalLink || 'https://t.me/kkyh1122';
 
         return `
-            <article class="card">
-                <div class="card-head">
-                    <h2 class="card-title card-title-wrap">
-                        ${logoSvg ? `<span class="ex-logo" aria-hidden="true">${logoSvg}</span>` : ``}
-                        <span class="ex-title-text">
-                            ${escapeHtml(titleMain)}${titleEn ? `<span class="title-en">${escapeHtml(titleEn)}</span>` : ``}
-                        </span>
-                    </h2>
-                    ${hero ? `<div class="hero-badge">${escapeHtml(hero)}</div>` : ``}
-                </div>
+          <article class="card card-support">
+            <div class="support-head">
+              <div class="support-logo" aria-hidden="true">
+                ${LOGO_SVGS.telegram}
+              </div>
 
-                <div class="card-divider"></div>
+              <div class="support-title-row">
+                <h2 class="support-title">${escapeHtml(tgTitle)}</h2>
+                <span class="support-badge">지원</span>
+              </div>
+            </div>
 
-                ${feeNumbers ? `
-                    <div class="fee-box">
-                        <div class="fee-row">
-                            <span class="fee-label">${escapeHtml(basis)}</span>
-                            <p class="fee-value">${feeNumbers}</p>
-                        </div>
-                    </div>
-                ` : ``}
-
-                <p class="card-desc">${escapeHtml(desc)}</p>
-
-                <div class="actions">
-                    ${externalBtn}
-                    <a class="btn btn-outline" href="${detailUrl}">자세히 보기</a>
-                </div>
-            </article>
+            <div class="actions support-actions">
+              <a
+                class="btn btn-primary"
+                href="${escapeHtml(tgLink)}"
+                target="_blank"
+                rel="noopener noreferrer"
+              >
+                텔레그램 문의하기
+              </a>
+            </div>
+          </article>
         `;
+      }
+
+      // ============================
+      // Exchange Card (일반)
+      // ============================
+      let titleMain = rawTitle;
+      let titleEn = '';
+
+      const m = String(rawTitle).match(/^(.*)\(([^)]+)\)\s*$/);
+      if (m) {
+        titleMain = m[1].trim();
+        titleEn = m[2].trim();
+      }
+
+      const desc = '공식 가입 페이지로 이동';
+      const subline = item.subline || item.feeLine || '';
+      const logoSvg = pickLogoSvg(item);
+      const detailUrl = `./detail.html?id=${encodeURIComponent(id)}`;
+
+      const externalBtn = externalLink
+        ? `
+          <a
+            class="btn btn-primary"
+            href="${escapeHtml(externalLink)}"
+            target="_blank"
+            rel="noopener noreferrer"
+          >
+            가입하기
+          </a>
+        `
+        : `
+          <a class="btn btn-primary" href="${detailUrl}">
+            상세에서 확인
+          </a>
+        `;
+
+      const tags = Array.isArray(item.tags) ? item.tags : [];
+      const hero = tags.find(t => /%/.test(String(t))) || '';
+      const basis = tags.find(t => String(t).includes('시장가')) || '시장가 기준';
+
+      const feeNumbersRaw = String(subline || '')
+        .replace(/^시장가\s*수수료\s*/g, '')
+        .replace(/^시장가\s*/g, '')
+        .trim();
+
+      let feeNumbers = feeNumbersRaw;
+      if (feeNumbersRaw.includes('→')) {
+        const parts = feeNumbersRaw.split('→').map(s => s.trim());
+        feeNumbers = `${parts[0]} → <span class="after">${parts[1]}</span>`;
+      }
+
+      const cleanTags = tags.filter(t => t !== hero && !String(t).includes('시장가'));
+      const tagsHtml = cleanTags
+        .slice(0, 4)
+        .map(t => `<span class="pill">${escapeHtml(t)}</span>`)
+        .join('');
+
+      return `
+        <article class="card">
+          <div class="card-head">
+            <h2 class="card-title card-title-wrap">
+              ${logoSvg ? `<span class="ex-logo">${logoSvg}</span>` : ``}
+              <span class="ex-title-text">
+                ${escapeHtml(titleMain)}
+                ${titleEn ? `<span class="title-en">${escapeHtml(titleEn)}</span>` : ``}
+              </span>
+            </h2>
+
+            ${hero ? `<div class="hero-badge">${escapeHtml(hero)}</div>` : ``}
+          </div>
+
+          <div class="card-divider"></div>
+
+          ${
+            feeNumbers
+              ? `
+            <div class="fee-box">
+              <div class="fee-row">
+                <span class="fee-label">${escapeHtml(basis)}</span>
+                <p class="fee-value">${feeNumbers}</p>
+              </div>
+            </div>
+          `
+              : ``
+          }
+
+          <p class="card-desc">${escapeHtml(desc)}</p>
+
+          ${tagsHtml ? `<div class="card-meta">${tagsHtml}</div>` : ``}
+  
+          <div class="actions">
+            ${externalBtn}
+            <a class="btn btn-outline" href="${detailUrl}">자세히 보기</a>
+          </div>
+        </article>
+      `;
     }
 
 
