@@ -53,7 +53,16 @@
       // item 필드는 referrals.json 구조에 맞춰 사용:
       // id, title, summary(or description), subline, tags, link
       const id = item.id;
-      const title = item.title || item.name || id;
+      const rawTitle = item.title || item.name || id;
+
+      // 제목에서 "(binance)" 같은 영문이 붙어있으면 분리
+      let titleMain = rawTitle;
+      let titleEn = '';
+      const m = String(rawTitle).match(/^(.*)\(([^)]+)\)\s*$/);
+      if (m) {
+        titleMain = m[1].trim();
+        titleEn = m[2].trim();
+      }
 
       // 지니 JSON은 summary를 쓰고 있으니 summary 우선
       const desc = item.summary || item.description || item.desc || '';
@@ -85,9 +94,11 @@
 
       return `
         <article class="card">
-          <h2 class="card-title">${escapeHtml(title)}</h2>
+          <h2 class="card-title">
+            ${escapeHtml(titleMain)}${titleEn ? `<span class="title-en">${escapeHtml(titleEn)}</span>` : ``}
+          </h2>
 
-          ${hero ? `<div class="hero-badge">🔥 ${escapeHtml(hero)}</div>` : ``}
+          ${hero ? `<div class="hero-badge">${escapeHtml(hero)}</div>` : ``}
 
           ${feeNumbers ? `
             <div class="fee-box">
@@ -109,6 +120,7 @@
         </article>
       `;
     }
+
 
 
     function render(list) {

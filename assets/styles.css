@@ -132,6 +132,15 @@ img, video, canvas{ max-width: 100%; height: auto; }
   letter-spacing: -0.01em;
 }
 
+/* 제목 안에서 영문(부제) 스타일 */
+.title-en{
+  margin-left: 6px;
+  font-weight: 700;
+  font-size: 13px;
+  color: #64748B; /* slate-500 */
+}
+
+
 .card-desc{
   margin: 0;
   color: var(--muted);
@@ -173,32 +182,32 @@ img, video, canvas{ max-width: 100%; height: auto; }
   color: #B91C1C;
 }
 
-/* 히어로 배지: 할인율을 제목 바로 아래 강하게 */
+/* 히어로 배지 (신뢰감 톤 / 이모지 없음) */
 .hero-badge{
   display: inline-flex;
   align-items: center;
-  gap: 6px;
-  padding: 8px 12px;            /* 조금 더 큼 */
+  padding: 7px 11px;
   border-radius: 999px;
-  border: 1px solid rgba(185, 28, 28, 0.22);
-  background: rgba(185, 28, 28, 0.06);
+  border: 1px solid rgba(185, 28, 28, 0.18);
+  background: rgba(185, 28, 28, 0.05);
   color: #B91C1C;
   font-weight: 900;
-  font-size: 14px;              /* 글씨 키움 */
+  font-size: 13px;
   letter-spacing: -0.01em;
   width: fit-content;
-  max-width: 240px;             /* 너무 길어지지 않게 */
 }
+
 
 
 
 /* 수수료 변화 박스 (라벨+숫자) */
 .fee-box{
   border: 1px solid var(--border);
-  background: rgba(246, 248, 251, 0.9);
+  background: rgba(246, 248, 251, 0.75); /* 더 은은한 레이어 */
   border-radius: 12px;
   padding: 10px 12px;
 }
+
 
 .fee-row{
   display: flex;
