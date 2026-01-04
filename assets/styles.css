@@ -133,12 +133,6 @@ img, video, canvas{ max-width: 100%; height: auto; }
 }
 
 /* ===== exchange logo in title ===== */
-.card-title{
-  display: flex;
-  align-items: center;
-  gap: 10px;
-}
-
 .ex-logo{
   width: 18px;
   height: 18px;
@@ -185,9 +179,9 @@ img, video, canvas{ max-width: 100%; height: auto; }
 
 .card-title-wrap{
   display: flex;
-  align-items: baseline;
+  align-items: center;
   flex-wrap: wrap;
-  gap: 6px;
+  gap: 10px;
 }
 
 /* 배지를 헤더 오른쪽에 두면 조금 더 컴팩트하게 */
@@ -195,7 +189,7 @@ img, video, canvas{ max-width: 100%; height: auto; }
   margin-top: 2px;
 }
 
-
+/* 카드 설명 */
 .card-desc{
   margin: 10px 0 0;
   color: var(--muted);
@@ -220,24 +214,6 @@ img, video, canvas{ max-width: 100%; height: auto; }
   background: rgba(246, 248, 251, 0.9);
 }
 
-/* 강조용 할인 pill (예: 20% 할인 / 50% 할인) */
-.pill-hot{
-  color: #B91C1C;                 /* red-700 */
-  border-color: rgba(185, 28, 28, 0.25);
-  background: rgba(185, 28, 28, 0.08);
-  font-weight: 800;
-}
-
-/* 카드 안에 “시장가 0.04% → 0.032%” 같은 한 줄 */
-.card-sub{
-  margin: 0;
-  font-size: 13px;
-  color: var(--text);
-}
-.card-sub strong{
-  color: #B91C1C;
-}
-
 /* 히어로 배지 (신뢰감 톤 / 이모지 없음) */
 .hero-badge{
   display: inline-flex;
@@ -246,24 +222,20 @@ img, video, canvas{ max-width: 100%; height: auto; }
   border-radius: 999px;
   border: 1px solid rgba(185, 28, 28, 0.18);
   background: rgba(185, 28, 28, 0.05);
-  color: #0F172A; /* slate-900: 어두운 네이비 */
+  color: #0F172A; /* slate-900 */
   font-weight: 900;
   font-size: 13px;
   letter-spacing: -0.01em;
   width: fit-content;
 }
 
-
-
-
 /* 수수료 변화 박스 (라벨+숫자) */
 .fee-box{
   border: 1px solid var(--border);
-  background: rgba(246, 248, 251, 0.75); /* 더 은은한 레이어 */
+  background: rgba(246, 248, 251, 0.75);
   border-radius: 12px;
   padding: 10px 12px;
 }
-
 
 .fee-row{
   display: flex;
@@ -289,7 +261,7 @@ img, video, canvas{ max-width: 100%; height: auto; }
   margin: 0;
   font-size: 14px;
   font-weight: 900;
-  color: #0F172A; /* 기본 숫자 */
+  color: #0F172A;
   letter-spacing: -0.01em;
 }
 
@@ -373,9 +345,14 @@ img, video, canvas{ max-width: 100%; height: auto; }
   font-size: 12px;
 }
 
-/* ===== Support (Telegram) card ===== */
+/* =========================================
+   Support (Telegram) card - minimal & premium
+   - 불필요한 중간 문구/태그 없음
+   - 로고 크게 + 한 줄 멘트 + 버튼
+========================================= */
 .card-support{
   padding: 18px;
+  gap: 14px;
 }
 
 .support-head{
@@ -385,44 +362,125 @@ img, video, canvas{ max-width: 100%; height: auto; }
 }
 
 .support-logo{
-  width: 44px;
-  height: 44px;
-  border-radius: 12px;
+  width: 56px;
+  height: 56px;
+  border-radius: 14px;
   display: inline-flex;
   align-items: center;
   justify-content: center;
   border: 1px solid var(--border);
   background: rgba(246, 248, 251, 0.9);
-  flex: 0 0 44px;
+  flex: 0 0 56px;
 }
 
 /* 텔레그램 로고 크게 */
 .support-logo .ex-logo-svg{
-  width: 26px;
-  height: 26px;
+  width: 34px;
+  height: 34px;
 }
 
-/* 타이포 */
 .support-title{
   margin: 0;
   font-size: 15px;
   font-weight: 800;
   letter-spacing: -0.01em;
-}
-
-.support-desc{
-  margin: 6px 0 0;
-  color: var(--muted);
-  font-size: 13px;
-  line-height: 1.45;
+  color: var(--text);
 }
 
 .support-actions{
-  margin-top: 14px;
+  margin-top: 0;
 }
 
 /* Mobile touch improvements */
 @media (max-width: 480px){
   .btn{ height: 44px; padding: 0 14px; }
   .search{ padding: 12px 14px; }
+}
+
+/* =========================================
+   Support (Telegram) Card - Premium Style
+========================================= */
+
+.card-support {
+  padding: 18px;
+  gap: 14px;
+  position: relative;
+  overflow: hidden;
+
+  border: 1px solid rgba(43, 108, 176, 0.20);
+  background: linear-gradient(
+    180deg,
+    rgba(43,108,176,0.06),
+    rgba(255,255,255,0.95)
+  );
+}
+
+.card-support::before {
+  content: "";
+  position: absolute;
+  left: 0;
+  top: 12px;
+  bottom: 12px;
+  width: 3px;
+  border-radius: 999px;
+  background: rgba(43, 108, 176, 0.8);
+}
+
+.support-head {
+  display: flex;
+  align-items: center;
+  gap: 14px;
+}
+
+.support-logo {
+  width: 56px;
+  height: 56px;
+  border-radius: 14px;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  flex: 0 0 56px;
+
+  border: 1px solid rgba(43, 108, 176, 0.22);
+  background: rgba(255,255,255,0.85);
+  box-shadow: 0 10px 18px rgba(15, 23, 42, 0.08);
+}
+
+.support-logo .ex-logo-svg {
+  width: 34px;
+  height: 34px;
+}
+
+.support-title-row {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  flex-wrap: wrap;
+}
+
+.support-title {
+  margin: 0;
+  font-size: 15px;
+  font-weight: 800;
+  letter-spacing: -0.01em;
+  color: var(--text);
+}
+
+.support-badge {
+  display: inline-flex;
+  align-items: center;
+  height: 22px;
+  padding: 0 10px;
+  border-radius: 999px;
+
+  font-size: 12px;
+  font-weight: 800;
+  color: rgba(43, 108, 176, 0.95);
+
+  border: 1px solid rgba(43, 108, 176, 0.25);
+  background: rgba(43, 108, 176, 0.10);
+}
+
+.support-actions {
+  margin-top: 10px;
 }
