@@ -132,6 +132,34 @@ img, video, canvas{ max-width: 100%; height: auto; }
   letter-spacing: -0.01em;
 }
 
+/* ===== exchange logo in title ===== */
+.card-title{
+  display: flex;
+  align-items: center;
+  gap: 10px;
+}
+
+.ex-logo{
+  width: 18px;
+  height: 18px;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  flex: 0 0 18px;
+  color: #475569; /* slate-600 */
+}
+
+.ex-logo-svg{
+  width: 18px;
+  height: 18px;
+  display: block;
+  fill: currentColor;
+}
+
+.ex-title-text{
+  display: inline-block;
+}
+
 /* 제목 안에서 영문(부제) 스타일 */
 .title-en{
   margin-left: 6px;
@@ -167,11 +195,6 @@ img, video, canvas{ max-width: 100%; height: auto; }
   margin-top: 2px;
 }
 
-.card-desc{
-  margin: 0;
-  color: var(--muted);
-  font-size: 13px;
-}
 
 .card-desc{
   margin: 10px 0 0;

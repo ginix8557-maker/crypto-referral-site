@@ -32,5 +32,39 @@
       "시장가(Taker) 수수료 기준 50% 할인 적용",
       "요율은 거래 조건 및 이벤트에 따라 변경될 수 있음"
     ]
+  },
+  {
+    "id": "exchange-OKX-54off",
+    "title": "오케이엑스(OKX)",
+    "summary": "수수료 54% 할인 레퍼럴",
+    "subline": "시장가 수수료 0.05% → 0.0225%",
+    "link": "https://www.okx.com/join/81009126",
+    "category": "exchange",
+    "updatedAt": "2026-01-04",
+    "tags": [
+      "54% 할인",
+      "시장가 기준"
+    ],
+    "notes": [
+      "시장가(Taker) 수수료 기준 54% 할인 적용",
+      "요율은 거래 조건 및 이벤트에 따라 변경될 수 있음"
+    ]
+  },
+  {
+    "id": "exchange-bitget-50off",
+    "title": "비트겟(bitget)",
+    "summary": "수수료 50% 할인 레퍼럴",
+    "subline": "시장가 수수료 0.06% → 0.03%",
+    "link": "https://partner.bitget.com/bg/P5GMPW",
+    "category": "exchange",
+    "updatedAt": "2026-01-04",
+    "tags": [
+      "50% 할인",
+      "시장가 기준"
+    ],
+    "notes": [
+      "시장가(Taker) 수수료 기준 50% 할인 적용",
+      "요율은 거래 조건 및 이벤트에 따라 변경될 수 있음"
+    ]
   }
 ]
