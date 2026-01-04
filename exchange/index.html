@@ -94,9 +94,13 @@
 
       return `
         <article class="card">
-          <h2 class="card-title">
-            ${escapeHtml(titleMain)}${titleEn ? `<span class="title-en">${escapeHtml(titleEn)}</span>` : ``}
-          </h2>
+          <div class="card-head">
+            <h2 class="card-title card-title-wrap">
+              ${escapeHtml(titleMain)}${titleEn ? `<span class="title-en">${escapeHtml(titleEn)}</span>` : ``}
+            </h2>
+            ${hero ? `<div class="hero-badge">${escapeHtml(hero)}</div>` : ``}
+          </div>
+
 
           ${hero ? `<div class="hero-badge">${escapeHtml(hero)}</div>` : ``}
 
