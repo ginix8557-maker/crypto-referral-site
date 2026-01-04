@@ -13,8 +13,8 @@
   <main class="container">
     <div class="topbar">
       <div>
-        <h1 class="page-title">코인 레퍼럴 모음</h1>
-        <p class="page-subtitle">레퍼럴 정보/링크를 깔끔하게 정리한 페이지</p>
+        <h1 class="page-title">킴스 페이백</h1>
+        <p class="page-subtitle">해외 거래소 수수료 할인 정보</p>
         <span class="badge">Theme A · BG #F6F8FB · Primary #2B6CB0</span>
       </div>
 
@@ -52,18 +52,13 @@
 
     function makeCard(item) {
       // item 필드는 referrals.json 구조에 맞춰 사용:
-      // id, name/title, description, tags(optional), link(optional)
+      // id, title, summary(or description), subline, tags, link
       const id = item.id;
       const title = item.title || item.name || id;
-      const desc = item.description || item.desc || '';
+
+      // 지니 JSON은 summary를 쓰고 있으니 summary 우선
+      const desc = item.summary || item.description || item.desc || '';
       const subline = item.subline || item.feeLine || '';
-
-
-      const tags = Array.isArray(item.tags) ? item.tags : [];
-      const tagsHtml = tags.slice(0, 6).map(t => {
-        const isHot = /%/.test(String(t)); // % 들어가면 할인 강조로 처리
-        return `<span class="pill ${isHot ? 'pill-hot' : ''}">${escapeHtml(t)}</span>`;
-      }).join('');
 
       const detailUrl = `./detail.html?id=${encodeURIComponent(id)}`;
       const externalLink = item.link || item.url || item.referralUrl || '';
@@ -72,12 +67,42 @@
         ? `<a class="btn btn-primary" href="${escapeHtml(externalLink)}" target="_blank" rel="noopener noreferrer">레퍼럴 링크 열기</a>`
         : `<a class="btn btn-primary" href="${detailUrl}">상세에서 확인</a>`;
 
+      // 히어로 배지: tags 중 '%' 들어간 항목 (예: "50% 할인", "20% 할인")
+      const tags = Array.isArray(item.tags) ? item.tags : [];
+      const hero = tags.find(t => /%/.test(String(t))) || '';
+
+      // “시장가 기준” 라벨은 tags에 있으면 사용, 없으면 기본값
+      const basis = tags.find(t => String(t).includes('시장가')) || '시장가 기준';
+
+      // subline에서 "시장가 수수료" 같은 앞부분은 제거해서 숫자만 남기기
+      const feeNumbers = String(subline || '')
+        .replace(/^시장가\s*수수료\s*/g, '')
+        .replace(/^시장가\s*/g, '')
+        .trim();
+
+      // 태그는 카드 아래에서 지저분해지지 않게: hero(할인율) / 시장가 기준은 제외
+      const cleanTags = tags.filter(t => t !== hero && !String(t).includes('시장가'));
+      const tagsHtml = cleanTags.slice(0, 4).map(t => `<span class="pill">${escapeHtml(t)}</span>`).join('');
+
       return `
         <article class="card">
           <h2 class="card-title">${escapeHtml(title)}</h2>
-          <p class="card-desc">${escapeHtml(desc)}</p>
-          ${subline ? `<p class="card-sub">${escapeHtml(subline)}</p>` : ``}
+
+          ${hero ? `<div class="hero-badge">🔥 ${escapeHtml(hero)}</div>` : ``}
+
+          ${feeNumbers ? `
+            <div class="fee-box">
+              <div class="fee-row">
+                <span class="fee-label">${escapeHtml(basis)}</span>
+                <p class="fee-value">${escapeHtml(feeNumbers)}</p>
+              </div>
+            </div>
+          ` : ``}
+
+          ${desc ? `<p class="card-desc">${escapeHtml(desc)}</p>` : ``}
+
           ${tagsHtml ? `<div class="card-meta">${tagsHtml}</div>` : ``}
+
           <div class="actions">
             ${externalBtn}
             <a class="btn btn-outline" href="${detailUrl}">상세 보기</a>
@@ -85,6 +110,7 @@
         </article>
       `;
     }
+
 
     function render(list) {
       if (!list.length) {
