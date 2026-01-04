@@ -66,5 +66,17 @@
       "시장가(Taker) 수수료 기준 50% 할인 적용",
       "요율은 거래 조건 및 이벤트에 따라 변경될 수 있음"
     ]
+  },
+  {
+    "id": "support-telegram",
+    "title": "텔레그램 문의",
+    "summary": "가입 방법·기타 거래소 문의",
+    "subline": "",
+    "link": "https://t.me/kkyh1122",
+    "category": "support",
+    "tags": [
+      "문의",
+      "텔레그램"
+    ]
   }
 ]

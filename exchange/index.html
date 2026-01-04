@@ -58,6 +58,9 @@
       bitget: `<svg class="ex-logo-svg" viewBox="0 0 24 24" aria-hidden="true" focusable="false" xmlns="http://www.w3.org/2000/svg">
         <path d="M6.2 12.2l5.2-5.2a1 1 0 0 1 1.4 0l5 5a1 1 0 0 1 0 1.4l-5.2 5.2a1 1 0 0 1-1.4 0l-1.6-1.6 2-2 1 1 4-4-4-4-4 4 1 1-2 2-1.8-1.8a1 1 0 0 1 0-1.4z"></path>
       </svg>`
+      telegram: `<svg class="ex-logo-svg" viewBox="0 0 24 24" aria-hidden="true" xmlns="http://www.w3.org/2000/svg">
+  <path d="M9.04 15.6l-.38 5.34c.54 0 .77-.23 1.05-.5l2.52-2.4 5.23 3.82c.96.53 1.64.25 1.89-.88l3.42-16.04c.32-1.46-.52-2.04-1.45-1.7L1.26 9.1c-1.41.55-1.39 1.32-.25 1.67l5.43 1.7L19.7 6.8c.62-.41 1.18-.18.72.23z"/>
+      </svg>`
 
     };
 
@@ -67,6 +70,8 @@
       if (t.includes('bybit') || t.includes('바이비트')) return LOGO_SVGS.bybit;
       if (t.includes('okx') || t.includes('오케이엑스')) return LOGO_SVGS.okx;
       if (t.includes('bitget') || t.includes('비트겟')) return LOGO_SVGS.bitget;
+      if (t.includes('텔레그램') || t.includes('telegram')) return LOGO_SVGS.telegram;
+
       return '';
     }
 
@@ -104,7 +109,11 @@
       const externalLink = item.link || item.url || item.referralUrl || '';
 
       const externalBtn = externalLink
-        ? `<a class="btn btn-primary" href="${escapeHtml(externalLink)}" target="_blank" rel="noopener noreferrer">가입하기</a>`
+        ? `<a class="btn btn-primary" href="${escapeHtml(externalLink)}" target="_blank" rel="noopener noreferrer">
+            ${id === 'support-telegram' ? '텔레그램 문의하기' : '가입하기'}
+           </a>`
+        : ``;
+
         : `<a class="btn btn-primary" href="${detailUrl}">상세에서 확인</a>`;
 
       // 히어로 배지: tags 중 '%' 들어간 항목 (예: "50% 할인", "20% 할인")
