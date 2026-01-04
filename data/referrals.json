@@ -1,7 +1,7 @@
 [
   {
     "id": "exchange-binance-20off",
-    "title": "바이낸스",
+    "title": "바이낸스(binance)",
     "summary": "수수료 20% 할인 레퍼럴",
     "subline": "시장가 수수료 0.04% → 0.032%",
     "link": "https://accounts.binance.com/en/register?ref=AINBLXVW",
@@ -18,7 +18,7 @@
   },
   {
     "id": "exchange-bybit-50off",
-    "title": "바이비트",
+    "title": "바이비트(bybit)",
     "summary": "수수료 50% 할인 레퍼럴",
     "subline": "시장가 수수료 0.055% → 0.0308%",
     "link": "https://partner.bybit.com/b/84018",
