@@ -83,10 +83,17 @@
       const basis = tags.find(t => String(t).includes('시장가')) || '시장가 기준';
 
       // subline에서 "시장가 수수료" 같은 앞부분은 제거해서 숫자만 남기기
-      const feeNumbers = String(subline || '')
+      const feeNumbersRaw = String(subline || '')
         .replace(/^시장가\s*수수료\s*/g, '')
         .replace(/^시장가\s*/g, '')
         .trim();
+
+      let feeNumbers = feeNumbersRaw;
+      if (feeNumbersRaw.includes('→')) {
+        const [before, after] = feeNumbersRaw.split('→').map(s => s.trim());
+        feeNumbers = `${before} → <span class="after">${after}</span>`;
+      }
+
 
       // 태그는 카드 아래에서 지저분해지지 않게: hero(할인율) / 시장가 기준은 제외
       const cleanTags = tags.filter(t => t !== hero && !String(t).includes('시장가'));
@@ -95,11 +102,13 @@
       return `
         <article class="card">
           <div class="card-head">
+
             <h2 class="card-title card-title-wrap">
               ${escapeHtml(titleMain)}${titleEn ? `<span class="title-en">${escapeHtml(titleEn)}</span>` : ``}
             </h2>
             ${hero ? `<div class="hero-badge">${escapeHtml(hero)}</div>` : ``}
           </div>
+          <div class="card-divider"></div>
 
 
 

@@ -148,6 +148,13 @@ img, video, canvas{ max-width: 100%; height: auto; }
   gap: 12px;
 }
 
+/* 카드 헤더 구분선 */
+.card-divider{
+  height: 1px;
+  background: var(--border);
+  margin: 12px 0 14px;
+}
+
 .card-title-wrap{
   display: flex;
   align-items: baseline;
@@ -216,7 +223,7 @@ img, video, canvas{ max-width: 100%; height: auto; }
   border-radius: 999px;
   border: 1px solid rgba(185, 28, 28, 0.18);
   background: rgba(185, 28, 28, 0.05);
-  color: #B91C1C;
+  color: #0F172A; /* slate-900: 어두운 네이비 */
   font-weight: 900;
   font-size: 13px;
   letter-spacing: -0.01em;
@@ -259,8 +266,14 @@ img, video, canvas{ max-width: 100%; height: auto; }
   margin: 0;
   font-size: 14px;
   font-weight: 900;
-  color: var(--text);
+  color: #0F172A; /* 기본 숫자 */
   letter-spacing: -0.01em;
+}
+
+/* 할인 후 숫자만 미세 강조 */
+.fee-value .after{
+  color: #1E40AF; /* muted blue */
+  font-weight: 900;
 }
 
 /* Buttons */
