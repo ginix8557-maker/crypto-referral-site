@@ -155,6 +155,25 @@ img, video, canvas{ max-width: 100%; height: auto; }
   background: rgba(246, 248, 251, 0.9);
 }
 
+/* 강조용 할인 pill (예: 20% 할인 / 50% 할인) */
+.pill-hot{
+  color: #B91C1C;                 /* red-700 */
+  border-color: rgba(185, 28, 28, 0.25);
+  background: rgba(185, 28, 28, 0.08);
+  font-weight: 800;
+}
+
+/* 카드 안에 “시장가 0.04% → 0.032%” 같은 한 줄 */
+.card-sub{
+  margin: 0;
+  font-size: 13px;
+  color: var(--text);
+}
+.card-sub strong{
+  color: #B91C1C;
+}
+
+
 /* Buttons */
 .actions{
   margin-top: 8px;

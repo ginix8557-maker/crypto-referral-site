@@ -56,9 +56,14 @@
       const id = item.id;
       const title = item.title || item.name || id;
       const desc = item.description || item.desc || '';
+      const subline = item.subline || item.feeLine || '';
+
 
       const tags = Array.isArray(item.tags) ? item.tags : [];
-      const tagsHtml = tags.slice(0, 6).map(t => `<span class="pill">${escapeHtml(t)}</span>`).join('');
+      const tagsHtml = tags.slice(0, 6).map(t => {
+        const isHot = /%/.test(String(t)); // % 들어가면 할인 강조로 처리
+        return `<span class="pill ${isHot ? 'pill-hot' : ''}">${escapeHtml(t)}</span>`;
+      }).join('');
 
       const detailUrl = `./detail.html?id=${encodeURIComponent(id)}`;
       const externalLink = item.link || item.url || item.referralUrl || '';
@@ -71,6 +76,7 @@
         <article class="card">
           <h2 class="card-title">${escapeHtml(title)}</h2>
           <p class="card-desc">${escapeHtml(desc)}</p>
+          ${subline ? `<p class="card-sub">${escapeHtml(subline)}</p>` : ``}
           ${tagsHtml ? `<div class="card-meta">${tagsHtml}</div>` : ``}
           <div class="actions">
             ${externalBtn}

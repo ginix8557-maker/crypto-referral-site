@@ -1,14 +1,36 @@
 [
   {
-    "id": "referral",
-    "title": "레퍼럴 예시",
-    "summary": "레퍼럴 정보를 정리하는 페이지(테스트)",
-    "link": "https://example.com",
+    "id": "exchange-binance-20off",
+    "title": "바이낸스",
+    "summary": "수수료 20% 할인 레퍼럴",
+    "subline": "시장가 수수료 0.04% → 0.032%",
+    "link": "https://accounts.binance.com/en/register?ref=AINBLXVW",
     "category": "exchange",
     "updatedAt": "2026-01-04",
+    "tags": [
+      "20% 할인",
+      "시장가 기준"
+    ],
     "notes": [
-      "링크를 통해 가입해야 혜택이 적용될 수 있어요.",
-      "혜택 조건은 수시로 바뀔 수 있어요."
+      "시장가(Taker) 수수료 기준 20% 할인 적용",
+      "지정가(Maker) 수수료는 별도 정책이 적용될 수 있음"
+    ]
+  },
+  {
+    "id": "exchange-bybit-50off",
+    "title": "바이비트",
+    "summary": "수수료 50% 할인 레퍼럴",
+    "subline": "시장가 수수료 0.055% → 0.0308%",
+    "link": "https://partner.bybit.com/b/84018",
+    "category": "exchange",
+    "updatedAt": "2026-01-04",
+    "tags": [
+      "50% 할인",
+      "시장가 기준"
+    ],
+    "notes": [
+      "시장가(Taker) 수수료 기준 50% 할인 적용",
+      "요율은 거래 조건 및 이벤트에 따라 변경될 수 있음"
     ]
   }
 ]
