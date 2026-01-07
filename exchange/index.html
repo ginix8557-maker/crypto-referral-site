@@ -17,8 +17,7 @@
   <meta property="og:title" content="킴스페이백 | 해외 거래소 수수료 할인 정보" />
   <meta property="og:description"
         content="해외 거래소 수수료 할인 정보를 한눈에. 킴스페이백에서 확인하세요." />
-  <meta property="og:site_name" content="킴스페이백" />
-  <meta property="og:locale" content="ko_KR" />
+  <meta property="og:site_name" content="킴스페이백" />   <meta property="og:locale" content="ko_KR" />
   <meta name="description" content="거래소 레퍼럴 정보를 깔끔하게 모아둔 페이지입니다. 검색으로 빠르게 찾고, 상세 페이지에서 링크를 확인하세요." />
 
   <!-- 공통 CSS -->
@@ -273,7 +272,7 @@
 
     async function load() {
       try {
-        const res = await fetch('../data/referrals.json', { cache: 'no-store' });
+        const res = await fetch('/data/referrals.json', { cache: 'no-store' });
         if (!res.ok) throw new Error('referrals.json 로드 실패: ' + res.status);
 
         const data = await res.json();
